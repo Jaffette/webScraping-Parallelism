@@ -5,29 +5,45 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 def main():
-    tiempo_inicial = time() 
-    gdp()
-    mobile()
-    internet()
-    tiempo_final = time() 
-    tiempo_ejecucion = tiempo_final - tiempo_inicial
-    
-    tiempo_inicial_thread = time()
-    t1 = threading.Thread(target=gdp, args=())
-    t2 = threading.Thread(target=mobile, args=())
-    t3 = threading.Thread(target=internet, args=())
+    opcion = int(input('DIGITE UN 1 PARA EJECUTAR EL PROGRAMA EN SECUENCIAL\n'+
+                       'DIGITE UN 2 PARA EJECUTAR EL PROGRAMA EN PARALELO\n'+
+                       'OPCION: '))
 
-    t1.start()
-    t2.start()
-    t3.start()
+    #Eliminamos los json si existen para evitar problemas de que se sobreescriban
+    if os.path.exists('gdp.json'):
+        os.remove('gdp.json')
+    if os.path.exists('internet.json'):
+        os.remove('internet.json')
+    if os.path.exists('mobile.json'):
+        os.remove('mobile.json')
 
-    t1.join()
-    t2.join()
-    t3.join()
-    tiempo_final_thread = time()
-    tiempo_ejecucion_thread = tiempo_final_thread - tiempo_inicial_thread
-    #print ('El tiempo de ejecucion lineal fue:',tiempo_ejecucion)
-    print ('El tiempo de ejecucion con thread fue fue:',tiempo_ejecucion_thread) 
+    if opcion == 1 :
+        
+       
+        tiempo_inicial = time() 
+        gdp()
+        mobile()
+        internet()
+        tiempo_final = time() 
+        tiempo_ejecucion = tiempo_final - tiempo_inicial
+        print ('El tiempo de ejecucion con thread fue fue:',tiempo_ejecucion) 
+
+    elif opcion == 2 :
+        tiempo_inicial_thread = time()
+        t1 = threading.Thread(target=gdp, args=())
+        t2 = threading.Thread(target=mobile, args=())
+        t3 = threading.Thread(target=internet, args=())
+
+        t1.start()
+        t2.start()
+        t3.start()
+
+        t1.join()
+        t2.join()
+        t3.join()
+        tiempo_final_thread = time()
+        tiempo_ejecucion_thread = tiempo_final_thread - tiempo_inicial_thread
+        print ('El tiempo de ejecucion con thread fue fue:',tiempo_ejecucion_thread) 
     
     create_graphics()
     
@@ -155,6 +171,8 @@ def create_graphics():
     plt.title('Countries with lowest mobile conections',bbox={"facecolor":"0.9", "pad":2})
     
     plt.show()
+
+    
 main()
 
 
